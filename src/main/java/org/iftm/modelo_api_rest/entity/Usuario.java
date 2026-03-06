@@ -1,4 +1,4 @@
-package com.bibliotecando.entities;
+package org.iftm.modelo_api_rest.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
