@@ -5,16 +5,23 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Column;
 
 @Entity
 @Table(name="tb_regra_emprestimo")
+
 public class RegraEmprestimo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="codigo_regra_emprestimo")
     private long codigoRegraEmprestimo;
+    @Column(name="prazo_dias")
     private int prazoDias;
+    @Column(name="multa_por_dia")
     private double multaPorDia;
+    @Column(name="multa_max")
     private double multaMax;
+    @Column(name="limite_emprestimos")
     private int limiteEmprestimos;
     private boolean ativa;
     

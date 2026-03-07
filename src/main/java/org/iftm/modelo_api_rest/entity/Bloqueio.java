@@ -7,15 +7,20 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Column;
 
 @Entity
 @Table(name="tb_bloqueio")
+
 public class Bloqueio {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)   
+    @Column(name="codigo_bloqueio")
     private long codigoBloqueio;
     private String motivo;
+    @Column(name="data_inicio")
     private Date dataInicio;
+    @Column(name="data_fim")
     private Date dataFim;
     
     public Bloqueio(long codigoBloqueio, String motivo, Date dataInicio, Date dataFim) {
