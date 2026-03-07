@@ -1,6 +1,5 @@
 package org.iftm.modelo_api_rest.entity;
 
-import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
