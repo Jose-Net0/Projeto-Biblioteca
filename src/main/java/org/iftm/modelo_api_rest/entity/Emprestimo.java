@@ -7,6 +7,8 @@ import jakarta.persistence.Id;
 import java.util.Date;
 import jakarta.persistence.Table;
 import jakarta.persistence.Column;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
 
 @Entity
 @Table(name="tb_emprestimo")
@@ -21,6 +23,11 @@ public class Emprestimo {
     private Date dataEmprestimo;
     @Column (name="data_devolucao_prevista")
     private Date dataDevolucaoPrevista;
+
+    @ManyToOne
+    @@JoinColumn(name = "codigo_usuario", referencedColumnName = "id")
+    private Usuario usuario;
+
     public Emprestimo() {
     }
     public Emprestimo(Long codigoEmprestimo, Date dataEmprestimo, Date dataDevolucaoPrevista) {
@@ -46,7 +53,12 @@ public class Emprestimo {
     }
     public void setDataDevolucaoPrevista(Date dataDevolucaoPrevista) {
         this.dataDevolucaoPrevista = dataDevolucaoPrevista;
+    } 
+    public Usuario getUsuario() {
+        return usuario;
     }
-
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
     
 }

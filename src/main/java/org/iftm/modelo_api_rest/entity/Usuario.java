@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Column;
+import jakarta.persistence.OneToMany;
 
 @Entity
 @Table(name="tb_Usuario")
@@ -21,8 +22,12 @@ public class Usuario {
     private String matricula;
     private String email;
     private String senha;
+
     @Column (name="tipo_usuario")
     private String tipoUsuario;
+
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
+    private List<Emprestimo> emprestimos = new ArrayList<>();
 
     public Usuario() {
     }
@@ -93,5 +98,15 @@ public class Usuario {
     public void setTipoUsuario(String tipoUsuario) {
         this.tipoUsuario = tipoUsuario;
     }
+
+    public List<Emprestimo> getEmprestimos() {
+        return emprestimos;
+    }
+
+    public void setEmprestimos(List<Emprestimo> emprestimos) {
+        this.emprestimos = emprestimos;
+    }
+    
 }
+
 

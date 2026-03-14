@@ -18,10 +18,13 @@ public class Bloqueio {
     @Column(name="codigo_bloqueio")
     private long codigoBloqueio;
     private String motivo;
+
     @Column(name="data_inicio")
     private Date dataInicio;
+
     @Column(name="data_fim")
     private Date dataFim;
+
     
     public Bloqueio(long codigoBloqueio, String motivo, Date dataInicio, Date dataFim) {
         this.codigoBloqueio = codigoBloqueio;
