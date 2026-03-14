@@ -23,7 +23,7 @@ public class Usuario {
     private String email;
     private String senha;
 
-    @Column (name="tipo_usuario")
+    @Column (name="fk_usuario")
     private String tipoUsuario;
 
     @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
@@ -106,7 +106,7 @@ public class Usuario {
     public void setEmprestimos(List<Emprestimo> emprestimos) {
         this.emprestimos = emprestimos;
     }
-    
+
 }
 
 

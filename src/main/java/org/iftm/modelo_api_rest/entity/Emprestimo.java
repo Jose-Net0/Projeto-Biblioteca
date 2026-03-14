@@ -8,6 +8,7 @@ import java.util.Date;
 import jakarta.persistence.Table;
 import jakarta.persistence.Column;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.JoinColumn;
 
 @Entity
@@ -25,8 +26,11 @@ public class Emprestimo {
     private Date dataDevolucaoPrevista;
 
     @ManyToOne
-    @@JoinColumn(name = "codigo_usuario", referencedColumnName = "id")
+    @@JoinColumn(name = "fk_usuario", referencedColumnName = "codigo_usuario")
     private Usuario usuario;
+
+    @OneToOne(mappedBy = "emprestimos", fetch = FetchType.LAZY)
+    private ItemEmprestimo tb_item_emprestimo;
 
     public Emprestimo() {
     }

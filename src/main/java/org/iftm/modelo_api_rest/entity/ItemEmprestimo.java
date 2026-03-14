@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Column;
 
+@Id
 @Entity
 @Table(name="tb_item_emprestimo")
 public class ItemEmprestimo {
@@ -19,13 +20,21 @@ public class ItemEmprestimo {
 
     @Column (name="data_devolucao_prevista")
     private Date dataDevolucaoPrevista;
+
     @Column (name="data_devolucao_real")
     private Date dataDevolucaoReal;
     private String status;
+
     @Column (name="multa_gerada")
     private Double multaGerada;
+
+    @OneToOne
+    @JoinColumn(name = "address_fk", referencedColumnName = "id")
+    private Emprestimo emprestimos;
+
     public ItemEmprestimo() {
     }
+
     public ItemEmprestimo(Long codigoItemEmprestimo, Date dataDevolucaoPrevista, Date dataDevolucaoReal, String status,
             Double multaGerada) {
         this.codigoItemEmprestimo = codigoItemEmprestimo;
