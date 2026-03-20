@@ -29,8 +29,8 @@ public class Emprestimo {
     @@JoinColumn(name = "fk_usuario", referencedColumnName = "codigo_usuario")
     private Usuario usuario;
 
-    @OneToOne(mappedBy = "emprestimos", fetch = FetchType.LAZY)
-    private ItemEmprestimo tb_item_emprestimo;
+    @OneToOne(mappedBy = "emprestimo") 
+    private ItemEmprestimo itemEmprestimo;
 
     public Emprestimo() {
     }
@@ -63,6 +63,12 @@ public class Emprestimo {
     }
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
+    }
+    public ItemEmprestimo getItemEmprestimo(){ 
+        return itemEmprestimo; 
+    }
+    public void setItemEmprestimo(ItemEmprestimo itemEmprestimo){
+        this.itemEmprestimo = itemEmprestimo;
     }
     
 }

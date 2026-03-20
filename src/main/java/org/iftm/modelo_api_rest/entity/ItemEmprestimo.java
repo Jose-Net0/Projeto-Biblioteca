@@ -29,8 +29,8 @@ public class ItemEmprestimo {
     private Double multaGerada;
 
     @OneToOne
-    @JoinColumn(name = "address_fk", referencedColumnName = "id")
-    private Emprestimo emprestimos;
+    @JoinColumn(name = "fk_emprestimo", referencedColumnName = "codigo_emprestimo")
+    private Emprestimo emprestimo;
 
     public ItemEmprestimo() {
     }
