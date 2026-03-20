@@ -8,7 +8,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Column;
 
-@Id
 @Entity
 @Table(name="tb_item_emprestimo")
 public class ItemEmprestimo {
