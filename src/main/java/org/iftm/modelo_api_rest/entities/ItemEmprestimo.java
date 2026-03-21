@@ -27,8 +27,7 @@ public class ItemEmprestimo {
     @Column (name="multa_gerada")
     private Double multaGerada;
 
-    @OneToOne
-    @JoinColumn(name = "fk_emprestimo", referencedColumnName = "codigo_emprestimo")
+    @ManyToOne(mappedBy = "itemEmprestimo", fetch = FetchType.LAZY)
     private Emprestimo emprestimo;
 
     public ItemEmprestimo() {

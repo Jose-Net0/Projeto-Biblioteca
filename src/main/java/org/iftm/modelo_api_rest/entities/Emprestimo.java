@@ -29,7 +29,8 @@ public class Emprestimo {
     @@JoinColumn(name = "fk_usuario", referencedColumnName = "codigo_usuario")
     private Usuario usuario;
 
-    @OneToOne(mappedBy = "emprestimo") 
+    @ManyToOne
+    @@JoinColumn(name = "fk_item_empretimo", referencedColumnName = "codigo_item_emprestimo")
     private ItemEmprestimo itemEmprestimo;
 
     public Emprestimo() {
