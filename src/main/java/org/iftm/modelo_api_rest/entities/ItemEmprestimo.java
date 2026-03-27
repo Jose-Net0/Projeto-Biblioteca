@@ -1,10 +1,13 @@
-package org.iftm.modelo_api_rest.entity;
+package org.iftm.modelo_api_rest.entities;
 
 import java.util.Date;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Column;
 
@@ -27,7 +30,8 @@ public class ItemEmprestimo {
     @Column (name="multa_gerada")
     private Double multaGerada;
 
-    @ManyToOne(mappedBy = "itemEmprestimo", fetch = FetchType.LAZY)
+    @ManyToOne
+    @JoinColumn(name = "fk_emprestimo", referencedColumnName = "codigo_emprestimo")
     private Emprestimo emprestimo;
 
     public ItemEmprestimo() {

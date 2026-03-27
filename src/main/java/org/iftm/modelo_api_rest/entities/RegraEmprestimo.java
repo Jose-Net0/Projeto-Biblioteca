@@ -1,10 +1,17 @@
-package org.iftm.modelo_api_rest.entity;
+package org.iftm.modelo_api_rest.entities;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.Column;
 
 @Entity
@@ -25,7 +32,7 @@ public class RegraEmprestimo {
     private int limiteEmprestimos;
     private boolean ativa;
 
-    @ManyToOne(mappedBy = "regraEmprestimo", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "regraEmprestimo", fetch = FetchType.LAZY)
     private List<Usuario> usuarios = new ArrayList<>();
     
     public RegraEmprestimo(long codigoRegraEmprestimo, int prazoDias, double multaPorDia, double multaMax, int limiteEmprestimos, boolean ativa) {
@@ -84,11 +91,11 @@ public class RegraEmprestimo {
     public void setAtiva(boolean ativa) {
         this.ativa = ativa;
     }
-    public List<Usuario> getUsuario() {
+    public List<Usuario> getUsuarios() {
         return usuarios;
     }
 
-    public setUsuario(List<Usuario> usuario) {
+    public void setUsuario(List<Usuario> usuario) {
         this.usuarios = usuario;
     }
 }

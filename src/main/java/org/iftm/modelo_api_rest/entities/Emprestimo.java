@@ -1,13 +1,17 @@
-package org.iftm.modelo_api_rest.entity;
+package org.iftm.modelo_api_rest.entities;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.util.Date;
+import java.util.List;
+
 import jakarta.persistence.Table;
 import jakarta.persistence.Column;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.JoinColumn;
 
@@ -26,11 +30,10 @@ public class Emprestimo {
     private Date dataDevolucaoPrevista;
 
     @ManyToOne
-    @@JoinColumn(name = "fk_usuario", referencedColumnName = "codigo_usuario")
+    @JoinColumn(name = "fk_usuario", referencedColumnName = "codigo_usuario")
     private Usuario usuario;
 
-    @ManyToOne
-    @@JoinColumn(name = "fk_item_empretimo", referencedColumnName = "codigo_item_emprestimo")
+    @OneToMany(mappedBy = "emprestimo", fetch = FetchType.LAZY)    
     private ItemEmprestimo itemEmprestimo;
 
     public Emprestimo() {

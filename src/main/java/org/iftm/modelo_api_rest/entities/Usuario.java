@@ -1,16 +1,23 @@
-package org.iftm.modelo_api_rest.entity;
+package org.iftm.modelo_api_rest.entities;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.OneToMany;
 
 @Entity
 @Table(name="tb_Usuario")
-public class Usuario {
+public class Usuario<Emprestimo> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,6 +36,10 @@ public class Usuario {
     @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
     private List<Emprestimo> emprestimos = new ArrayList<>();
 
+   @ManyToOne
+    @JoinColumn(name = "fk_regra", referencedColumnName = "codigo_regra_emprestimo")
+    private RegraEmprestimo regraEmprestimo;
+    
     public Usuario() {
     }
 

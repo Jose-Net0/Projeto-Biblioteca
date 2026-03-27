@@ -1,4 +1,4 @@
-package com.bibliotecar.entity;
+package org.iftm.modelo_api_rest.entities;
 
 
 import java.util.Date;

@@ -1,14 +1,18 @@
-package org.iftm.modelo_api_rest.entity;
+package org.iftm.modelo_api_rest.entities;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Column;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 @Entity
 @Table(name="tb_bloqueio")
@@ -24,7 +28,7 @@ public class Bloqueio {
     @Column(name="data_fim")
     private Date dataFim;
 
-    @ManyToOne(mappedBy = "bloqueio", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "bloqueio", fetch = FetchType.LAZY)
     private List<Usuario> usuarios = new ArrayList<>();
     
     public Bloqueio(long codigoBloqueio, String motivo, Date dataInicio, Date dataFim) {
@@ -70,7 +74,7 @@ public class Bloqueio {
         return usuarios;
     }
 
-    public setUsuario(List<Usuario> usuario) {
+    public void setUsuario(List<Usuario> usuario) {
         this.usuarios = usuario;
     }
 }
