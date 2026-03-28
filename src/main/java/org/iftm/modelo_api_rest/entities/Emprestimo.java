@@ -5,6 +5,8 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -34,7 +36,7 @@ public class Emprestimo {
     private Usuario usuario;
 
     @OneToMany(mappedBy = "emprestimo", fetch = FetchType.LAZY)    
-    private ItemEmprestimo itemEmprestimo;
+    private List<ItemEmprestimo> itemEmprestimo = new ArrayList<>();
 
     public Emprestimo() {
     }
@@ -68,10 +70,10 @@ public class Emprestimo {
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
-    public ItemEmprestimo getItemEmprestimo(){ 
-        return itemEmprestimo; 
+    public List<ItemEmprestimo> getItemEmprestimo() {
+        return itemEmprestimo;
     }
-    public void setItemEmprestimo(ItemEmprestimo itemEmprestimo){
+    public void setItemEmprestimo(List<ItemEmprestimo> itemEmprestimo) {
         this.itemEmprestimo = itemEmprestimo;
     }
     

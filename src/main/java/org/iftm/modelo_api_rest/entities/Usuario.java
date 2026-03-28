@@ -17,7 +17,7 @@ import jakarta.persistence.OneToMany;
 
 @Entity
 @Table(name="tb_Usuario")
-public class Usuario<Emprestimo> {
+public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,10 +36,14 @@ public class Usuario<Emprestimo> {
     @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
     private List<Emprestimo> emprestimos = new ArrayList<>();
 
-   @ManyToOne
+    @ManyToOne
     @JoinColumn(name = "fk_regra", referencedColumnName = "codigo_regra_emprestimo")
     private RegraEmprestimo regraEmprestimo;
-    
+
+    @ManyToOne
+    @JoinColumn(name = "fk_bloqueio", referencedColumnName = "codigo_bloqueio")
+    private Bloqueio bloqueio;
+
     public Usuario() {
     }
 
