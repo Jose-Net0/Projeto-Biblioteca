@@ -46,9 +46,9 @@ public class ModeloApiRestApplication implements CommandLineRunner {
         ItemEmprestimo it2 = new ItemEmprestimo(null, Date.from(Instant.now()), Date.from(Instant.now()), "Devolido", 1.0);
         itemEmprestimoRepository.saveAll(Arrays.asList(it1, it2));
 
-		//imprimir usuário
+	
 		Long codigo = 3L;
-		//o repositorio retorna um Optional(caixa) que contém um usuário ou não
+
 		Optional<Usuario> retorno = usuarioRepository.findById(codigo);
 		if (retorno.isEmpty()){
 			System.out.println("Não existe usuário com código " + codigo + ".");
