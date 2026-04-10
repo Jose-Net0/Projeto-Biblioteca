@@ -14,7 +14,6 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Column;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.JoinColumn;
 
 @Entity
