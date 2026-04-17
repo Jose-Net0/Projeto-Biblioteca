@@ -57,6 +57,35 @@ public class ModeloApiRestApplication implements CommandLineRunner {
 			System.out.println(usu.getNome());			
 		}
 
+		System.out.println("\n-----------------------------------------");
+
+        
+        System.out.println("-> Listando todos os Usuários cadastrados:");
+        Iterable<Usuario> todosUsuarios = usuarioRepository.findAll();
+        for (Usuario u : todosUsuarios) {
+            System.out.println("Nome: " + u.getNome() + " | Email: " + u.getEmail());
+        }
+
+        System.out.println("\n-----------------------------------------");
+
+        // 4. EXCLUSÃO (deleteById)
+        System.out.println("-> Testando a Exclusão:");
+        Long idParaExcluir = 1L; // Excluindo o ItemEmprestimo de ID 1
+        if (itemEmprestimoRepository.existsById(idParaExcluir)) {
+            itemEmprestimoRepository.deleteById(idParaExcluir);
+            System.out.println("Item de Empréstimo com ID " + idParaExcluir + " foi excluído com sucesso.");
+        } else {
+            System.out.println("Item de Empréstimo não encontrado para exclusão.");
+        }
+
+        System.out.println("\n-----------------------------------------");
+
+        System.out.println("-> Testando QueryMethod (Buscar usuários por Perfil 'ESTUDANTE'):");
+        try {
+            System.out.println("Lembre-se de descomentar e chamar os métodos do seu Repository aqui!");
+        } catch (Exception e) {
+            System.out.println("Erro ao testar QueryMethod: " + e.getMessage());
+        }
 		
 
 	}
