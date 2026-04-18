@@ -5,6 +5,7 @@ import org.iftm.modelo_api_rest.entities.Usuario;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import org.iftm.modelo_api_rest.entities.Emprestimo;
@@ -14,6 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 @SpringBootApplication
 public class ModeloApiRestApplication implements CommandLineRunner {
@@ -34,59 +39,49 @@ public class ModeloApiRestApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		
-        Usuario u1 = new Usuario(null, "Maltida Santana", "000.000.000-00", "20241234", "MaltiSa@email.com", "senha123","ESTUDANTE");
-        usuarioRepository.save(u1);
+        Long codigo = 1L; 
+        Optional<Usuario> retorno = usuarioRepository.findById(codigo);
 
-
+        if (retorno.isEmpty()){
+            System.out.println("Não existe usuário com código " + codigo + ".");
+        } else {
+            Usuario usu = retorno.get();
+            System.out.println("Usuário encontrado pelo ID: " + usu.getNome() + " - " + usu.getTipoUsuario());
         
-        Emprestimo e1 = new Emprestimo(null,Date.from(Instant.now()), Date.from(Instant.now()));
-        emprestimoRepository.save(e1);
+        }
 
-        ItemEmprestimo it1 = new ItemEmprestimo(null, Date.from(Instant.now()), Date.from(Instant.now()), "Devolido", 0.0);
-        ItemEmprestimo it2 = new ItemEmprestimo(null, Date.from(Instant.now()), Date.from(Instant.now()), "Devolido", 1.0);
-        itemEmprestimoRepository.saveAll(Arrays.asList(it1, it2));
+		long codigoEmprestimo = 3L;
+		Optional<Emprestimo> retornoEmprestimo = emprestimoRepository.findById(codigoEmprestimo);
 
-	
-		Long codigo = 3L;
-
-		Optional<Usuario> retorno = usuarioRepository.findById(codigo);
-		if (retorno.isEmpty()){
-			System.out.println("Não existe usuário com código " + codigo + ".");
-		}else{
-			Usuario usu = retorno.get();
-			System.out.println(usu.getNome());			
+		if (retornoEmprestimo.isEmpty()){
+			System.out.println("Não existe empréstimo com código " + codigoEmprestimo + ".");
+		} else {
+			Emprestimo emprestimo = retornoEmprestimo.get();
+			System.out.println("Empréstimo encontrado pelo ID: " + emprestimo.getDataEmprestimo() + " - " + emprestimo.getUsuario().getNome());
+		
 		}
 
-		System.out.println("\n-----------------------------------------");
-
-        
-        System.out.println("-> Listando todos os Usuários cadastrados:");
-        Iterable<Usuario> todosUsuarios = usuarioRepository.findAll();
-        for (Usuario u : todosUsuarios) {
-            System.out.println("Nome: " + u.getNome() + " | Email: " + u.getEmail());
-        }
-
-        System.out.println("\n-----------------------------------------");
-
-        // 4. EXCLUSÃO (deleteById)
-        System.out.println("-> Testando a Exclusão:");
-        Long idParaExcluir = 1L; // Excluindo o ItemEmprestimo de ID 1
-        if (itemEmprestimoRepository.existsById(idParaExcluir)) {
-            itemEmprestimoRepository.deleteById(idParaExcluir);
-            System.out.println("Item de Empréstimo com ID " + idParaExcluir + " foi excluído com sucesso.");
-        } else {
-            System.out.println("Item de Empréstimo não encontrado para exclusão.");
-        }
-
-        System.out.println("\n-----------------------------------------");
-
-        System.out.println("-> Testando QueryMethod (Buscar usuários por Perfil 'ESTUDANTE'):");
-        try {
-            System.out.println("Lembre-se de descomentar e chamar os métodos do seu Repository aqui!");
-        } catch (Exception e) {
-            System.out.println("Erro ao testar QueryMethod: " + e.getMessage());
-        }
 		
+		Long codigoItemEmprestimo = 4L; 
+		Optional<ItemEmprestimo> retornoItemEmprestimo = itemEmprestimoRepository.findById(codigoItemEmprestimo);
 
-	}
+		if (retornoItemEmprestimo.isEmpty()){
+			System.out.println("Não existe item de empréstimo com código " + codigoItemEmprestimo + ".");
+		} else {
+			ItemEmprestimo itemEmprestimo = retornoItemEmprestimo.get();
+			System.out.println("Item de Empréstimo encontrado pelo ID: " + itemEmprestimo.getStatus() + " - " + itemEmprestimo.getDataDevolucaoPrevista());
+		
+		}
+
+		String cpf = "456.789.123-45";
+		List<ItemEmprestimo> itensPorCpf = itemEmprestimoRepository.buscarItensPorCpfUsuario(cpf);
+		for (ItemEmprestimo itemEmprestimo : itensPorCpf) {
+			System.out.println("Item de Empréstimo encontrado pelo ID: " + itemEmprestimo.getStatus() + " - " + itemEmprestimo.getDataDevolucaoPrevista());
+					
+		}
+			
+
+}
+	
+
 }

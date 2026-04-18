@@ -16,7 +16,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.OneToMany;
 
 @Entity
-@Table(name="tb_Usuario")
+@Table(name="tb_usuario")
 public class Usuario {
 
     @Id
@@ -30,7 +30,7 @@ public class Usuario {
     private String email;
     private String senha;
 
-    @Column (name="fk_usuario")
+    @Column (name="tipo_usuario")
     private String tipoUsuario;
 
     @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
