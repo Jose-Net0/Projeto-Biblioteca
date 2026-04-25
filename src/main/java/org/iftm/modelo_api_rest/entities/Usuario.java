@@ -122,6 +122,11 @@ public class Usuario {
         this.emprestimos = emprestimos;
     }
 
+    public Object getBloqueio() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getBloqueio'");
+    }
+
 }
 
 
