@@ -24,16 +24,16 @@ public class LivroService {
 
     public Livro save(Livro livro) {
         // Validação básica: título não pode ser nulo ou vazio
-        if (livro.getTitulo() == null || livro.getTitulo().trim().isEmpty()) {
-            throw new IllegalArgumentException("Título do livro é obrigatório");
+        if (livro == null || livro.getTitulo() == null || livro.getTitulo().trim().isEmpty()) {
+            return null;
         }
         // Validação: ano de publicação deve ser razoável
         if (livro.getAnoPublicacao() < 0 || livro.getAnoPublicacao() > 2026) {
-            throw new IllegalArgumentException("Ano de publicação inválido");
+            return null;
         }
         // Quantidade de exemplares deve ser positiva
         if (livro.getQuantidadeExemplares() < 0) {
-            throw new IllegalArgumentException("Quantidade de exemplares deve ser não negativa");
+            return null;
         }
         return livroRepository.save(livro);
     }

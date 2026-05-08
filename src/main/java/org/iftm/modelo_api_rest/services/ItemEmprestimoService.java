@@ -24,8 +24,8 @@ public class ItemEmprestimoService {
 
     public ItemEmprestimo save(ItemEmprestimo itemEmprestimo) {
         // Validação: empréstimo deve existir
-        if (itemEmprestimo.getEmprestimo() == null) {
-            throw new IllegalArgumentException("Empréstimo é obrigatório");
+        if (itemEmprestimo == null || itemEmprestimo.getEmprestimo() == null) {
+            return null;
         }
         return itemEmprestimoRepository.save(itemEmprestimo);
     }

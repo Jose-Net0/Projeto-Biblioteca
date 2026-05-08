@@ -23,17 +23,20 @@ public class RegraEmprestimoService {
     }
 
     public RegraEmprestimo save(RegraEmprestimo regraEmprestimo) {
+        if (regraEmprestimo == null) {
+            return null;
+        }
         // Validação: prazo deve ser positivo
         if (regraEmprestimo.getPrazoDias() <= 0) {
-            throw new IllegalArgumentException("Prazo em dias deve ser positivo");
+            return null;
         }
         // Multa por dia deve ser não negativa
         if (regraEmprestimo.getMultaPorDia() < 0) {
-            throw new IllegalArgumentException("Multa por dia deve ser não negativa");
+            return null;
         }
         // Limite de empréstimos deve ser positivo
         if (regraEmprestimo.getLimiteEmprestimos() <= 0) {
-            throw new IllegalArgumentException("Limite de empréstimos deve ser positivo");
+            return null;
         }
         return regraEmprestimoRepository.save(regraEmprestimo);
     }

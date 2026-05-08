@@ -24,16 +24,16 @@ public class UsuarioService {
 
     public Usuario save(Usuario usuario) {
         // Validação: nome não pode ser nulo ou vazio
-        if (usuario.getNome() == null || usuario.getNome().trim().isEmpty()) {
-            throw new IllegalArgumentException("Nome do usuário é obrigatório");
+        if (usuario == null || usuario.getNome() == null || usuario.getNome().trim().isEmpty()) {
+            return null;
         }
         // Validação: CPF deve ter 11 dígitos (simples)
         if (usuario.getCpf() == null || !usuario.getCpf().matches("\\d{11}")) {
-            throw new IllegalArgumentException("CPF deve ter 11 dígitos");
+            return null;
         }
         // Validação: email deve conter @
         if (usuario.getEmail() == null || !usuario.getEmail().contains("@")) {
-            throw new IllegalArgumentException("Email inválido");
+            return null;
         }
         return usuarioRepository.save(usuario);
     }

@@ -24,12 +24,12 @@ public class BloqueioService {
 
     public Bloqueio save(Bloqueio bloqueio) {
         // Validação: motivo não pode ser nulo
-        if (bloqueio.getMotivo() == null || bloqueio.getMotivo().trim().isEmpty()) {
-            throw new IllegalArgumentException("Motivo do bloqueio é obrigatório");
+        if (bloqueio == null || bloqueio.getMotivo() == null || bloqueio.getMotivo().trim().isEmpty()) {
+            return null;
         }
         // Data fim deve ser após data início
         if (bloqueio.getDataFim() != null && bloqueio.getDataFim().before(bloqueio.getDataInicio())) {
-            throw new IllegalArgumentException("Data fim deve ser após data início");
+            return null;
         }
         return bloqueioRepository.save(bloqueio);
     }

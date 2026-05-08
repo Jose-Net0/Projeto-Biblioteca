@@ -40,13 +40,16 @@ public class EmprestimoService {
 
     public Emprestimo save(Emprestimo emprestimo) {
         // Validação: usuário deve existir e não estar bloqueado
+        if (emprestimo == null) {
+            return null;
+        }
         Usuario usuario = emprestimo.getUsuario();
         if (usuario == null || usuario.getBloqueio() != null) {
-            throw new IllegalArgumentException("Usuário inválido ou bloqueado");
+            return null;
         }
         // Validação: data de empréstimo não pode ser futura
         if (emprestimo.getDataEmprestimo().after(new Date())) {
-            throw new IllegalArgumentException("Data de empréstimo não pode ser futura");
+            return null;
         }
         return emprestimoRepository.save(emprestimo);
     }
@@ -57,19 +60,21 @@ public class EmprestimoService {
 
     // Método para emprestar livros: negócio complexo
     public Emprestimo emprestarLivros(Long usuarioId, List<Long> livroIds) {
+        if (usuarioId == null || livroIds == null || livroIds.isEmpty()) {
+            return null;
+        }
+
         // Buscar usuário
-        Usuario usuario = usuarioRepository.findById(usuarioId)
-                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
-        if (usuario.getBloqueio() != null) {
-            throw new IllegalArgumentException("Usuário está bloqueado");
+        Usuario usuario = usuarioRepository.findById(usuarioId).orElse(null);
+        if (usuario == null || usuario.getBloqueio() != null) {
+            return null;
         }
 
         // Verificar disponibilidade dos livros
         for (Long livroId : livroIds) {
-            Livro livro = livroRepository.findById(livroId)
-                    .orElseThrow(() -> new IllegalArgumentException("Livro não encontrado"));
-            if (livro.getQuantidadeExemplares() <= 0) {
-                throw new IllegalArgumentException("Livro " + livro.getTitulo() + " não disponível");
+            Livro livro = livroRepository.findById(livroId).orElse(null);
+            if (livro == null || livro.getQuantidadeExemplares() <= 0) {
+                return null;
             }
         }
 
@@ -85,7 +90,10 @@ public class EmprestimoService {
 
         // Criar itens de empréstimo e decrementar quantidade
         for (Long livroId : livroIds) {
-            Livro livro = livroRepository.findById(livroId).get();
+            Livro livro = livroRepository.findById(livroId).orElse(null);
+            if (livro == null) {
+                return null;
+            }
             livro.setQuantidadeExemplares(livro.getQuantidadeExemplares() - 1);
             livroRepository.save(livro);
 

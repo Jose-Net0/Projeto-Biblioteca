@@ -24,15 +24,15 @@ public class ReservaService {
 
     public Reserva save(Reserva reserva) {
         // Validação: usuário e livro devem existir
-        if (reserva.getUsuario() == null) {
-            throw new IllegalArgumentException("Usuário é obrigatório para reserva");
+        if (reserva == null || reserva.getUsuario() == null) {
+            return null;
         }
         if (reserva.getLivro() == null) {
-            throw new IllegalArgumentException("Livro é obrigatório para reserva");
+            return null;
         }
         // Data de reserva não pode ser futura
         if (reserva.getDataReserva().after(new java.util.Date())) {
-            throw new IllegalArgumentException("Data de reserva não pode ser futura");
+            return null;
         }
         return reservaRepository.save(reserva);
     }
