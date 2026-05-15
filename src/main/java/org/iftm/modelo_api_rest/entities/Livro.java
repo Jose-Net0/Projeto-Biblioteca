@@ -9,24 +9,30 @@ import jakarta.persistence.Column;
 
 @Entity
 @Table(name="tb_livro")
+// Representa um livro no catálogo com informações bibliográficas e estoque
 public class Livro {
 
+    // Identificador do livro
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="codigo_livro")
     private Long codigo;
 
+    // Metadados do livro
     private String titulo;
     private String autor;
     private String categoria;
     private String editora;
 
+    // Ano de publicação
     @Column(name="ano_publicacao")
     private int anoPublicacao;
 
+    // Quantidade de exemplares disponíveis
     @Column(name="quantidade_exemplares")
     private int quantidadeExemplares;
 
+    // Status geral do livro (ex: DISPONIVEL, INDISPONIVEL)
     private String status;
 
     public Livro() {

@@ -15,22 +15,29 @@ import jakarta.persistence.Column;
 
 @Entity
 @Table(name="tb_regra_emprestimo")
-
+// Entidade que define regras de empréstimo (prazo, multas e limites)
 public class RegraEmprestimo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="codigo_regra_emprestimo")
+    // Identificador da regra
     private long codigoRegraEmprestimo;
+    // Prazo padrão em dias para devolução
     @Column(name="prazo_dias")
     private int prazoDias;
+    // Valor da multa por dia de atraso
     @Column(name="multa_por_dia")
     private double multaPorDia;
+    // Valor máximo acumulado de multa
     @Column(name="multa_max")
     private double multaMax;
+    // Limite de empréstimos simultâneos por usuário
     @Column(name="limite_emprestimos")
     private int limiteEmprestimos;
+    // Flag indicando se a regra está ativa
     private boolean ativa;
 
+    // Usuários que usam esta regra de empréstimo
     @OneToMany(mappedBy = "regraEmprestimo", fetch = FetchType.LAZY)
     private List<Usuario> usuarios = new ArrayList<>();
     

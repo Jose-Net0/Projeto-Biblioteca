@@ -14,6 +14,7 @@ import jakarta.persistence.JoinColumn;
 
 @Entity
 @Table(name="tb_reserva")
+// Entidade que representa uma reserva de exemplar feita por um usuário
 public class Reserva {
 
     @Id
@@ -21,9 +22,11 @@ public class Reserva {
     @Column(name="codigo_reserva")
     private Long codigoReserva;
 
+    // Data em que a reserva foi efetuada
     @Column(name="data_reserva")
     private Date dataReserva;
 
+    // Status da reserva (ex.: PENDENTE, ATENDIDA, CANCELADA)
     private String status;
 
     @ManyToOne

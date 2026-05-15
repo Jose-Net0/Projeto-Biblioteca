@@ -18,22 +18,31 @@ import jakarta.persistence.JoinColumn;
 
 @Entity
 @Table(name="tb_emprestimo")
+// Representa uma transação de empréstimo contendo um ou mais itens
 public class Emprestimo {
 
+    // Identificador do empréstimo
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column (name="codigo_emprestimo")
     private Long codigoEmprestimo;
 
+    // Datas do empréstimo e previsão de devolução
     @Column (name="data_emprestimo")
     private Date dataEmprestimo;
     @Column (name="data_devolucao_prevista")
     private Date dataDevolucaoPrevista;
 
+    // Usuário associado a este empréstimo
     @ManyToOne
     @JoinColumn(name = "fk_usuario", referencedColumnName = "codigo_usuario")
     private Usuario usuario;
 
+    // Bibliotecário que processou a operação
+    @Column(name = "bibliotecario_responsavel")
+    private String bibliotecarioResponsavel;
+
+    // Itens que compõem o empréstimo (cada item refere-se a um livro)
     @OneToMany(mappedBy = "emprestimo", fetch = FetchType.LAZY)    
     private List<ItemEmprestimo> itemEmprestimo = new ArrayList<>();
 
@@ -69,6 +78,15 @@ public class Emprestimo {
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
+
+    public String getBibliotecarioResponsavel() {
+        return bibliotecarioResponsavel;
+    }
+
+    public void setBibliotecarioResponsavel(String bibliotecarioResponsavel) {
+        this.bibliotecarioResponsavel = bibliotecarioResponsavel;
+    }
+
     public List<ItemEmprestimo> getItemEmprestimo() {
         return itemEmprestimo;
     }

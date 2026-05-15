@@ -11,14 +11,19 @@ import java.util.Optional;
 @Service
 public class BloqueioService {
 
+    // Serviço responsável por operações CRUD sobre bloqueios de usuários
+    // Contém validações simples antes de persistir um bloqueio
+
     @Autowired
     private BloqueioRepository bloqueioRepository;
 
     public List<Bloqueio> findAll() {
+        // Retorna todos os registros de bloqueio
         return bloqueioRepository.findAll();
     }
 
     public Optional<Bloqueio> findById(Long id) {
+        // Busca um bloqueio por ID
         return bloqueioRepository.findById(id);
     }
 
@@ -27,14 +32,16 @@ public class BloqueioService {
         if (bloqueio == null || bloqueio.getMotivo() == null || bloqueio.getMotivo().trim().isEmpty()) {
             return null;
         }
-        // Data fim deve ser após data início
+        // Validação: período inválido (data fim antes da data início)
         if (bloqueio.getDataFim() != null && bloqueio.getDataFim().before(bloqueio.getDataInicio())) {
             return null;
         }
+        // Persiste o bloqueio após validações
         return bloqueioRepository.save(bloqueio);
     }
 
     public void deleteById(Long id) {
+        // Remove o bloqueio pelo ID
         bloqueioRepository.deleteById(id);
     }
 }

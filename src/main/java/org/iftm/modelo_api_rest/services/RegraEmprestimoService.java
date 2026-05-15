@@ -11,18 +11,24 @@ import java.util.Optional;
 @Service
 public class RegraEmprestimoService {
 
+    // Serviço que gerencia regras de empréstimo (prazos, multas e limites)
+    // Valida as regras antes de persistir
+
     @Autowired
     private RegraEmprestimoRepository regraEmprestimoRepository;
 
     public List<RegraEmprestimo> findAll() {
+        // Retorna todas as regras de empréstimo cadastradas
         return regraEmprestimoRepository.findAll();
     }
 
     public Optional<RegraEmprestimo> findById(Long id) {
+        // Busca uma regra por ID
         return regraEmprestimoRepository.findById(id);
     }
 
     public RegraEmprestimo save(RegraEmprestimo regraEmprestimo) {
+        // Valida objeto não nulo
         if (regraEmprestimo == null) {
             return null;
         }
@@ -30,18 +36,20 @@ public class RegraEmprestimoService {
         if (regraEmprestimo.getPrazoDias() <= 0) {
             return null;
         }
-        // Multa por dia deve ser não negativa
+        // Validação: multa diária não pode ser negativa
         if (regraEmprestimo.getMultaPorDia() < 0) {
             return null;
         }
-        // Limite de empréstimos deve ser positivo
+        // Validação: limite de empréstimos deve ser positivo
         if (regraEmprestimo.getLimiteEmprestimos() <= 0) {
             return null;
         }
+        // Persiste a regra após validações
         return regraEmprestimoRepository.save(regraEmprestimo);
     }
 
     public void deleteById(Long id) {
+        // Remove a regra de empréstimo pelo ID
         regraEmprestimoRepository.deleteById(id);
     }
 }

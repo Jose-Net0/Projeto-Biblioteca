@@ -15,18 +15,23 @@ import jakarta.persistence.OneToMany;
 
 @Entity
 @Table(name="tb_bloqueio")
-
+// Entidade que representa um bloqueio aplicado a usuários (motivo e período)
 public class Bloqueio {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)   
     @Column(name="codigo_bloqueio")
+    // Identificador do bloqueio
     private long codigoBloqueio;
+    // Motivo textual do bloqueio
     private String motivo;
+    // Data de início do bloqueio
     @Column(name="data_inicio")
     private Date dataInicio;
+    // Data de fim do bloqueio (opcional)
     @Column(name="data_fim")
     private Date dataFim;
 
+    // Relação inversa: usuários afetados por este bloqueio
     @OneToMany(mappedBy = "bloqueio", fetch = FetchType.LAZY)
     private List<Usuario> usuarios = new ArrayList<>();
     

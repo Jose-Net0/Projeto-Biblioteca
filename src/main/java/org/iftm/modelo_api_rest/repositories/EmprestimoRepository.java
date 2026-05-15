@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+// Repositório para consultas e persistência de empréstimos
 public interface EmprestimoRepository extends JpaRepository<Emprestimo, Long> {
 
     List<Emprestimo> findByCodigoEmprestimo(Long codigoEmprestimo);

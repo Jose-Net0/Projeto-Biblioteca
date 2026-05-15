@@ -12,23 +12,29 @@ import jakarta.persistence.Column;
 
 @Entity
 @Table(name="tb_item_emprestimo")
+// Item individual de um empréstimo que representa um exemplar/obra emprestada
 public class ItemEmprestimo {
 
+    // Identificador do item de empréstimo
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column (name="codigo_item_emprestimo")
     private Long codigoItemEmprestimo;
 
+    // Datas previstas e reais de devolução
     @Column (name="data_devolucao_prevista")
     private Date dataDevolucaoPrevista;
 
     @Column (name="data_devolucao_real")
     private Date dataDevolucaoReal;
+    // Status do item: Emprestado / Devolvido / Atrasado
     private String status;
 
+    // Multa calculada em caso de atraso
     @Column (name="multa_gerada")
     private Double multaGerada;
 
+    // Relação com o empréstimo pai
     @ManyToOne
     @JoinColumn(name = "fk_emprestimo", referencedColumnName = "codigo_emprestimo")
     private Emprestimo emprestimo;

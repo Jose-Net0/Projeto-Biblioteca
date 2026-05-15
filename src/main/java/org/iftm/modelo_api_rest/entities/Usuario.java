@@ -10,6 +10,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -17,29 +18,46 @@ import jakarta.persistence.OneToMany;
 
 @Entity
 @Table(name="tb_usuario")
+// Representa usuários da biblioteca (dados pessoais, autenticação e vínculo com regras)
 public class Usuario {
 
+    // Primary key: identificador do usuário
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column (name="codigo_usuario")
     private Long codigoUsuario;
 
+    // Informações pessoais
     private String nome;
     private String cpf;
     private String matricula;
     private String email;
     private String senha;
 
+    // Classificação do usuário (ex: ALUNO, SERVIDOR)
     @Column (name="tipo_usuario")
     private String tipoUsuario;
 
+    // Credenciais e controle de tentativas de login
+    private String login;
+    private int loginAttempts;
+    private Date lockoutUntil;
+
+    // Contato e endereço
+    private String telefone;
+    private String endereco;
+    private String status = "ATIVO";
+
+    // Relacionamento: um usuário pode ter vários empréstimos
     @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
     private List<Emprestimo> emprestimos = new ArrayList<>();
 
+    // Regra de empréstimo aplicada ao usuário (limites e prazos)
     @ManyToOne
     @JoinColumn(name = "fk_regra", referencedColumnName = "codigo_regra_emprestimo")
     private RegraEmprestimo regraEmprestimo;
 
+    // Bloqueio associado, quando aplicável (motivo e período)
     @ManyToOne
     @JoinColumn(name = "fk_bloqueio", referencedColumnName = "codigo_bloqueio")
     private Bloqueio bloqueio;
@@ -114,6 +132,54 @@ public class Usuario {
         this.tipoUsuario = tipoUsuario;
     }
 
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public int getLoginAttempts() {
+        return loginAttempts;
+    }
+
+    public void setLoginAttempts(int loginAttempts) {
+        this.loginAttempts = loginAttempts;
+    }
+
+    public Date getLockoutUntil() {
+        return lockoutUntil;
+    }
+
+    public void setLockoutUntil(Date lockoutUntil) {
+        this.lockoutUntil = lockoutUntil;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
+
+    public String getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public List<Emprestimo> getEmprestimos() {
         return emprestimos;
     }
@@ -122,9 +188,12 @@ public class Usuario {
         this.emprestimos = emprestimos;
     }
 
-    public Object getBloqueio() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getBloqueio'");
+    public Bloqueio getBloqueio() {
+        return bloqueio;
+    }
+
+    public void setBloqueio(Bloqueio bloqueio) {
+        this.bloqueio = bloqueio;
     }
 
 }
