@@ -196,6 +196,16 @@ public class Usuario {
         this.bloqueio = bloqueio;
     }
 
+    public Object getRegraEmprestimo() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getRegraEmprestimo'");
+    }
+
+    public void setRegraEmprestimo(Object regraEmprestimo2) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setRegraEmprestimo'");
+    }
+
 }
 
 
