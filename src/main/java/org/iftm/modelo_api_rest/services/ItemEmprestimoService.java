@@ -36,6 +36,10 @@ public class ItemEmprestimoService {
         return itemEmprestimoRepository.save(itemEmprestimo);
     }
 
+    public List<ItemEmprestimo> buscarItensPorCpfUsuario(String cpf) {
+        return itemEmprestimoRepository.buscarItensPorCpfUsuario(cpf);
+    }
+
     public void deleteById(Long id) {
         // Remove um item de empréstimo pelo ID
         itemEmprestimoRepository.deleteById(id);
