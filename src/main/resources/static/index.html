@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pesquisa da Biblioteca</title>
+    <style>
+        :root {
+            color-scheme: light;
+            font-family: Inter, Arial, sans-serif;
+            background: #eef3fb;
+            color: #1a2540;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            padding: 24px;
+            background: linear-gradient(180deg, #eef3fb 0%, #ffffff 100%);
+        }
+
+        .page {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: clamp(2rem, 2.5vw, 2.6rem);
+            color: #10264f;
+        }
+
+        header p {
+            margin: 0;
+            color: #42506b;
+            max-width: 680px;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 22px 55px rgba(15, 43, 90, 0.1);
+            padding: 28px;
+            margin-bottom: 24px;
+        }
+
+        .grid {
+            display: grid;
+            gap: 18px;
+        }
+
+        .grid-2 {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #10264f;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #d7e1f0;
+            border-radius: 14px;
+            background: #f7f9fd;
+            font-size: 1rem;
+            color: #10264f;
+        }
+
+        button {
+            background: #1c3c80;
+            color: #ffffff;
+            border: none;
+            border-radius: 14px;
+            padding: 16px 24px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.2s ease, background 0.2s ease;
+            width: 100%;
+        }
+
+        button:hover {
+            transform: translateY(-1px);
+            background: #112f63;
+        }
+
+        .message {
+            padding: 16px 18px;
+            border-radius: 16px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .message.error {
+            background: #fff1f1;
+            color: #8a1c1c;
+        }
+
+        .message.success {
+            background: #e8faf1;
+            color: #1f5d35;
+        }
+
+        .result {
+            margin-top: 18px;
+        }
+
+        .result-title {
+            margin: 0 0 14px;
+            font-size: 1.15rem;
+            color: #10264f;
+        }
+
+        .table {
+            overflow-x: auto;
+            border-radius: 18px;
+            border: 1px solid #d8e2f2;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 680px;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 14px 16px;
+            border-bottom: 1px solid #eef3fb;
+        }
+
+        th {
+            background: #f1f6ff;
+            color: #10264f;
+            font-weight: 700;
+        }
+
+        tr:hover td {
+            background: #f7faff;
+        }
+
+        .json-output {
+            margin-top: 18px;
+            background: #0f1b35;
+            color: #e4f0ff;
+            padding: 18px;
+            border-radius: 16px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            white-space: pre-wrap;
+            word-break: break-word;
+            max-height: 320px;
+            overflow: auto;
+        }
+
+        @media (max-width: 720px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <header>
+            <div>
+                <h1>Pesquisa da Biblioteca</h1>
+                <p>Busque livros, usuários, empréstimos e itens de empréstimo usando filtros diversos. Escolha o tipo de entidade e use os campos relevantes para encontrar os dados.</p>
+            </div>
+        </header>
+
+        <section class="card">
+            <div class="grid grid-2">
+                <div>
+                    <label for="entityType">Selecionar tipo de pesquisa</label>
+                    <select id="entityType" onchange="updateForm()">
+                        <option value="livros">Livros</option>
+                        <option value="usuarios">Usuários</option>
+                        <option value="emprestimos">Empréstimos</option>
+                        <option value="itens-emprestimo">Itens de empréstimo</option>
+                    </select>
+                </div>
+                <div>
+                    <label>&nbsp;</label>
+                    <button onclick="performSearch()">Pesquisar</button>
+                </div>
+            </div>
+
+            <div id="filters" class="grid grid-2" style="margin-top: 18px;"></div>
+            <div id="message" class="message"></div>
+        </section>
+
+        <section id="results" class="card" style="display:none;">
+            <h2 class="result-title">Resultados</h2>
+            <div id="tableWrapper" class="table"></div>
+        </section>
+    </div>
+
+    <script>
+        const entityTypeEl = document.getElementById('entityType');
+        const filtersEl = document.getElementById('filters');
+        const messageEl = document.getElementById('message');
+        const resultsEl = document.getElementById('results');
+        const tableWrapper = document.getElementById('tableWrapper');
+
+        const filterConfig = {
+            livros: [
+                { key: 'id', label: 'ID do livro', type: 'number', placeholder: '1' },
+                { key: 'titulo', label: 'Título', type: 'text', placeholder: 'O Pequeno Príncipe' },
+                { key: 'autor', label: 'Autor', type: 'text', placeholder: 'Machado de Assis' },
+                { key: 'categoria', label: 'Categoria', type: 'text', placeholder: 'Romance' },
+                { key: 'status', label: 'Status', type: 'text', placeholder: 'DISPONIVEL' }
+            ],
+            usuarios: [
+                { key: 'id', label: 'ID do usuário', type: 'number', placeholder: '1' },
+                { key: 'nome', label: 'Nome', type: 'text', placeholder: 'André Silva' },
+                { key: 'cpf', label: 'CPF', type: 'text', placeholder: '123.456.789-01' },
+                { key: 'matricula', label: 'Matrícula', type: 'text', placeholder: 'MAT202601' },
+                { key: 'email', label: 'Email', type: 'text', placeholder: 'andre@email.com' },
+                { key: 'tipoUsuario', label: 'Tipo de usuário', type: 'text', placeholder: 'ALUNO' },
+                { key: 'status', label: 'Status', type: 'text', placeholder: 'ATIVO' }
+            ],
+            emprestimos: [
+                { key: 'id', label: 'ID do empréstimo', type: 'number', placeholder: '1' },
+                { key: 'usuarioId', label: 'ID do usuário', type: 'number', placeholder: '1' },
+                { key: 'itemId', label: 'ID do item', type: 'number', placeholder: '1' }
+            ],
+            'itens-emprestimo': [
+                { key: 'id', label: 'ID do item', type: 'number', placeholder: '1' },
+                { key: 'status', label: 'Status', type: 'text', placeholder: 'DEVOLVIDO' },
+                { key: 'emprestimoId', label: 'ID do empréstimo', type: 'number', placeholder: '1' },
+                { key: 'cpf', label: 'CPF do usuário', type: 'text', placeholder: '123.456.789-01' }
+            ]
+        };
+
+        const keyLabels = {
+            codigoLivro: 'Código',
+            titulo: 'Título',
+            autor: 'Autor',
+            categoria: 'Categoria',
+            editora: 'Editora',
+            anoPublicacao: 'Ano',
+            quantidadeExemplares: 'Exemplares',
+            status: 'Status',
+            codigoUsuario: 'Código',
+            nome: 'Nome',
+            cpf: 'CPF',
+            matricula: 'Matrícula',
+            email: 'Email',
+            tipoUsuario: 'Tipo',
+            login: 'Login',
+            loginAttempts: 'Tentativas de login',
+            lockoutUntil: 'Bloqueio até',
+            telefone: 'Telefone',
+            endereco: 'Endereço',
+            codigoEmprestimo: 'Código',
+            dataEmprestimo: 'Data do empréstimo',
+            dataDevolucaoPrevista: 'Previsão de devolução',
+            dataDevolucaoReal: 'Devolução real',
+            multaGerada: 'Multa',
+            emprestimo: 'Empréstimo',
+            usuario: 'Usuário',
+            bibliotecarioResponsavel: 'Bibliotecário',
+            codigoItemEmprestimo: 'Código do item'
+        };
+
+        function updateForm() {
+            const entity = entityTypeEl.value;
+            const filters = filterConfig[entity] || [];
+            filtersEl.innerHTML = '';
+            filters.forEach(({ key, label, type, placeholder }) => {
+                const wrapper = document.createElement('div');
+                const fieldLabel = document.createElement('label');
+                fieldLabel.setAttribute('for', key);
+                fieldLabel.textContent = label;
+                const input = document.createElement('input');
+                input.id = key;
+                input.type = type;
+                input.placeholder = placeholder;
+                wrapper.appendChild(fieldLabel);
+                wrapper.appendChild(input);
+                filtersEl.appendChild(wrapper);
+            });
+            clearResults();
+        }
+
+        function setMessage(text, type = 'error') {
+            messageEl.textContent = text;
+            messageEl.className = `message ${type}`;
+            messageEl.style.display = text ? 'block' : 'none';
+        }
+
+        function clearResults() {
+            resultsEl.style.display = 'none';
+            tableWrapper.innerHTML = '';
+        }
+
+        function buildQueryString(params) {
+            const query = new URLSearchParams();
+            Object.entries(params).forEach(([key, value]) => {
+                if (value !== null && value !== undefined && String(value).trim() !== '') {
+                    query.append(key, value);
+                }
+            });
+            return query.toString();
+        }
+
+        function renderTable(data) {
+            if (!Array.isArray(data)) {
+                data = [data];
+            }
+            if (!data.length) {
+                tableWrapper.innerHTML = '<div style="padding:20px;color:#42506b;">Nenhum resultado encontrado.</div>';
+                return;
+            }
+
+            const keys = Object.keys(data[0]);
+            const header = keys.map(key => `<th>${keyLabels[key] || key}</th>`).join('');
+            const rows = data.map(row => {
+                const cells = keys.map(key => `<td>${formatValue(row[key])}</td>`).join('');
+                return `<tr>${cells}</tr>`;
+            }).join('');
+
+            tableWrapper.innerHTML = `<table><thead><tr>${header}</tr></thead><tbody>${rows}</tbody></table>`;
+        }
+
+        function formatValue(value) {
+            if (value === null || value === undefined) {
+                return '—';
+            }
+            if (Array.isArray(value)) {
+                return value.map(formatValue).join(', ');
+            }
+            if (typeof value === 'object') {
+                if (value.nome) {
+                    return value.nome;
+                }
+                if (value.titulo) {
+                    return value.titulo;
+                }
+                if (value.usuario && value.usuario.nome) {
+                    return value.usuario.nome;
+                }
+                if (value.livro && value.livro.titulo) {
+                    return value.livro.titulo;
+                }
+                return JSON.stringify(value);
+            }
+            return String(value);
+        }
+
+        async function performSearch() {
+            setMessage('');
+            clearResults();
+            const entity = entityTypeEl.value;
+            const params = {};
+            filterConfig[entity].forEach(({ key }) => {
+                const input = document.getElementById(key);
+                if (!input) return;
+                params[key] = input.value;
+            });
+
+            const query = buildQueryString(params);
+            const url = `/${entity}${query ? '/search?' + query : ''}`;
+
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    if (response.status === 404) {
+                        setMessage('Nenhum resultado encontrado.', 'error');
+                        return;
+                    }
+                    setMessage('Erro ao consultar o servidor. Tente novamente.', 'error');
+                    return;
+                }
+                const data = await response.json();
+                if (!data || (Array.isArray(data) && data.length === 0)) {
+                    setMessage('Nenhum resultado encontrado.', 'success');
+                    return;
+                }
+                renderTable(data);
+                setMessage('Resultados carregados.', 'success');
+                resultsEl.style.display = 'block';
+            } catch (error) {
+                console.error(error);
+                setMessage('Erro de conexão. Verifique o servidor.', 'error');
+            }
+        }
+
+        updateForm();
+    </script>
+</body>
+</html>

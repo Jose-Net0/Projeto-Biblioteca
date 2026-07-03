@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -24,6 +25,24 @@ public class EmprestimoController {
     public ResponseEntity<List<Emprestimo>> findAll() {
         List<Emprestimo> emprestimos = emprestimoService.findAll();
         return ResponseEntity.ok(emprestimos);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<?> search(
+            @RequestParam(required = false) Long id,
+            @RequestParam(required = false) Long usuarioId,
+            @RequestParam(required = false) Long itemId) {
+        if (id != null) {
+            Optional<Emprestimo> emprestimo = emprestimoService.findById(id);
+            return emprestimo.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        }
+        if (usuarioId != null) {
+            return ResponseEntity.ok(emprestimoService.findByUsuarioId(usuarioId));
+        }
+        if (itemId != null) {
+            return ResponseEntity.ok(emprestimoService.findByItemCodigoItemEmprestimo(itemId));
+        }
+        return ResponseEntity.ok(emprestimoService.findAll());
     }
 
     @GetMapping("/{id}")

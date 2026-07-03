@@ -1,5 +1,6 @@
 package org.iftm.modelo_api_rest.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -18,6 +19,7 @@ import jakarta.persistence.OneToMany;
 
 @Entity
 @Table(name="tb_usuario")
+@JsonIgnoreProperties({"emprestimos"})
 // Representa usuários da biblioteca (dados pessoais, autenticação e vínculo com regras)
 public class Usuario {
 
@@ -40,7 +42,10 @@ public class Usuario {
 
     // Credenciais e controle de tentativas de login
     private String login;
-    private int loginAttempts;
+
+    @Column(name = "login_attempts", nullable = false, columnDefinition = "INT DEFAULT 0")
+    private int loginAttempts = 0;
+
     private Date lockoutUntil;
 
     // Contato e endereço
@@ -196,14 +201,12 @@ public class Usuario {
         this.bloqueio = bloqueio;
     }
 
-    public Object getRegraEmprestimo() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getRegraEmprestimo'");
+    public RegraEmprestimo getRegraEmprestimo() {
+        return regraEmprestimo;
     }
 
-    public void setRegraEmprestimo(Object regraEmprestimo2) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setRegraEmprestimo'");
+    public void setRegraEmprestimo(RegraEmprestimo regraEmprestimo) {
+        this.regraEmprestimo = regraEmprestimo;
     }
 
 }

@@ -26,6 +26,22 @@ public class LivroService {
         return livroRepository.findById(id);
     }
 
+    public List<Livro> findByTitulo(String titulo) {
+        return livroRepository.findByTituloContainingIgnoreCase(titulo);
+    }
+
+    public List<Livro> findByAutor(String autor) {
+        return livroRepository.findByAutorContainingIgnoreCase(autor);
+    }
+
+    public List<Livro> findByCategoria(String categoria) {
+        return livroRepository.findByCategoriaContainingIgnoreCase(categoria);
+    }
+
+    public List<Livro> findByStatus(String status) {
+        return livroRepository.findByStatusContainingIgnoreCase(status);
+    }
+
     public Livro save(Livro livro) {
         // Validação básica: título não pode ser nulo ou vazio
         if (livro == null || livro.getTitulo() == null || livro.getTitulo().trim().isEmpty()) {

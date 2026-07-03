@@ -51,6 +51,26 @@ public class EmprestimoService {
         return emprestimoRepository.findById(id);
     }
 
+    public List<Emprestimo> findByUsuarioId(Long usuarioId) {
+        return emprestimoRepository.findByUsuarioCodigoUsuario(usuarioId);
+    }
+
+    public List<Emprestimo> findByCodigoEmprestimo(Long codigoEmprestimo) {
+        return emprestimoRepository.findByCodigoEmprestimo(codigoEmprestimo);
+    }
+
+    public List<Emprestimo> findByItemCodigoItemEmprestimo(Long codigoItemEmprestimo) {
+        return emprestimoRepository.findByItemEmprestimoCodigoItemEmprestimo(codigoItemEmprestimo);
+    }
+
+    public List<Emprestimo> findByDataEmprestimo(Date dataEmprestimo) {
+        return emprestimoRepository.findByDataEmprestimo(dataEmprestimo);
+    }
+
+    public List<Emprestimo> findByDataDevolucaoPrevista(Date dataDevolucaoPrevista) {
+        return emprestimoRepository.findByDataDevolucaoPrevista(dataDevolucaoPrevista);
+    }
+
     public Emprestimo save(Emprestimo emprestimo) {
         // Salva empréstimo simples com validações básicas
         // Validação: objeto não nulo e usuário presente

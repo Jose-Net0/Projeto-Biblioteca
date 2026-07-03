@@ -27,6 +27,18 @@ public class ItemEmprestimoService {
         return itemEmprestimoRepository.findById(id);
     }
 
+    public List<ItemEmprestimo> findByStatus(String status) {
+        return itemEmprestimoRepository.findByStatus(status);
+    }
+
+    public List<ItemEmprestimo> findByEmprestimoId(Long emprestimoId) {
+        return itemEmprestimoRepository.findByEmprestimoCodigoEmprestimo(emprestimoId);
+    }
+
+    public List<ItemEmprestimo> findByCpfUsuario(String cpf) {
+        return itemEmprestimoRepository.buscarItensPorCpfUsuario(cpf);
+    }
+
     public ItemEmprestimo save(ItemEmprestimo itemEmprestimo) {
         // Validação: um ItemEmprestimo precisa referenciar um Empréstimo existente
         if (itemEmprestimo == null || itemEmprestimo.getEmprestimo() == null) {

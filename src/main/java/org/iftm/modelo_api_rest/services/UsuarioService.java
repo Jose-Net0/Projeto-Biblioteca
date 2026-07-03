@@ -32,8 +32,20 @@ public class UsuarioService {
         return usuarioRepository.findByCpf(cpf);
     }
 
+    public List<Usuario> findByMatricula(String matricula) {
+        return usuarioRepository.findByMatricula(matricula);
+    }
+
+    public List<Usuario> findByEmail(String email) {
+        return usuarioRepository.findByEmail(email);
+    }
+
     public List<Usuario> findByTipoUsuario(String tipoUsuario) {
         return usuarioRepository.findByTipoUsuario(tipoUsuario);
+    }
+
+    public List<Usuario> findByStatus(String status) {
+        return usuarioRepository.findByStatus(status);
     }
 
     public List<Usuario> findByRegraEmprestimoTipoUsuario(String tipoUsuario) {
@@ -137,7 +149,7 @@ public class UsuarioService {
     }
 
     public void delete(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'delete'");
+        deleteById(id);
     }
 }
+

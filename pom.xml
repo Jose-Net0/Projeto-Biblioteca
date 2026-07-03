@@ -16,7 +16,7 @@
 		Projeto Básico para a disciplina de Projeto e Desenvolvimento de Sistemas
 	</description>	
 	<properties>
-		<java.version>11</java.version>
+		<java.version>21</java.version>
 	</properties>
 	<dependencies>
 

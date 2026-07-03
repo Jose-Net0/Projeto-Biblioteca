@@ -1,5 +1,6 @@
 package org.iftm.modelo_api_rest.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -18,6 +19,7 @@ import jakarta.persistence.JoinColumn;
 
 @Entity
 @Table(name="tb_emprestimo")
+@JsonIgnoreProperties({"itemEmprestimo"})
 // Representa uma transação de empréstimo contendo um ou mais itens
 public class Emprestimo {
 
